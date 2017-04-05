@@ -17,7 +17,7 @@ export  default  class ItemChart extends React.Component{
     }
 
     componentDidMount() {
-
+        console.log("in Item")
     }
 
     render(){
@@ -33,6 +33,7 @@ export  default  class ItemChart extends React.Component{
     }
 
     _backAction(){
+        //
         this.props.navigator.pop();
     }
     _getLineData() {
@@ -84,5 +85,4 @@ const itemStyles = StyleSheet.create({
         fontSize:18,
         color: '#000001'
     },
-
 })

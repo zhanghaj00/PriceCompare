@@ -41,7 +41,6 @@ export  default  class App extends  React.Component{
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(this.state.data)}
                         renderRow={this._renderItem.bind(this)}
-                        renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -65,8 +64,9 @@ export  default  class App extends  React.Component{
     }
 
     _onItemPress(){
+        console.log("press");
         this.props.navigator.push({
-            name: 'itemChart',
+            name: 'ItemChart',
             component: ItemChart
         })
     }

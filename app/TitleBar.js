@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import {NativeAppEventEmitter,View,StyleSheet} from 'react-native';
+import {View,StyleSheet} from 'react-native';
 
 import Button from './Button'
 

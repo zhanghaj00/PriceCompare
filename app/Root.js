@@ -18,10 +18,11 @@ export default  class Root extends React.Component{
         return(
             <View style={{flex: 1}}>
                 <Navigator
+                    initialRoute={{ name: "App", component: App }}
                     renderScene={(route, navigator) => {
-                        let Component = App;
+                        let Component = route.component;
                         return (
-                            <Component navigator = {navigator} route = {route}  />
+                            <Component  {...route.params} navigator = {navigator}  />
                         )
                     }}
                 />
