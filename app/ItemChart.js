@@ -26,7 +26,8 @@ export  default  class ItemChart extends React.Component{
                 <TitleBar backAction={this._backAction.bind(this)}/>
                 <Text style={itemStyles.text}>收藏的商品1</Text>
                 <View style={{flex:1,paddingTop:30,paddingBottom:500}}>
-                    <LineChart style={{flex:1}} data={this._getLineData()}/>
+                    <LineChart style={{flex:1}} data={this._getLineData()}
+                               xAxis={{drawGridLines:false,gridLineWidth:1,position:"BOTTOM"}}/>
                 </View>
             </View>
         )
@@ -46,20 +47,6 @@ export  default  class ItemChart extends React.Component{
                     label:'test1',
                     config:{
                         color:'blue'
-                    }
-                },
-                {
-                    data:[3.0,15.0,22],
-                    label:'test2',
-                    config:{
-                        color:'red'
-                    }
-                },
-                {
-                    data:[7,12,22],
-                    label:'test2',
-                    config:{
-                        color:'yellow'
                     }
                 }
             ]

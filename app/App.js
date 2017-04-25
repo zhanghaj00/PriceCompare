@@ -9,11 +9,14 @@ import {
     StyleSheet,
     ListView,
     RefreshControl,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
+    InteractionManager
 } from 'react-native'
 
 import ItemChart from './ItemChart';
-
+import TitleBar from './TitleBar';
+import AddItem from './AddItem';
+import PriceStore from './PriceStore';
 
 export  default  class App extends  React.Component{
 
@@ -25,18 +28,38 @@ export  default  class App extends  React.Component{
             dataSource: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
             }),
-            data:[{id:1,title:'单车2',price:'21.5'},{id:2,title:'单车1',price:'21.5'}]
+            data:[{id:1,title:'单车2',price:'21.5'},{id:2,title:'单车1',price:'21.5'}],
+            isMain :true
         }
     }
 
     componentDidMount(){
-        this._getCacheData();
+       // this._getCacheData();
+        /*InteractionManager.runAfterInteractions(() => {
+            let dataJson =  PriceStore.getAllkey();
+            let dataArray = [];
+            if(dataJson){
+                dataJson.forEach((itemId)=>{
+                    let value = PriceStore.cachedObject(itemId);
+                    if(value && value.length > 0){
+                        dataArray.push(value[0])
+                    }
+                })
+            }
+            if(dataArray.length > 0){
+                this.setState({
+                    data:dataArray
+                })
+            }
+        });*/
     }
 
     render(){
         return(
             <View style={styles.container}>
+                <TitleBar  {...this.state}  addItemAction={this._addItemAction.bind(this)}/>
                 <Text style={styles.text}>收藏的商品</Text>
+                <TitleBar  addItemAction={this._addItemAction.bind(this)}/>
                 <View style={styles.list}>
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(this.state.data)}
@@ -61,6 +84,14 @@ export  default  class App extends  React.Component{
 
     _onRefresh(){
 
+    }
+
+    _addItemAction(){
+        console.log("press");
+        this.props.navigator.push({
+            name: 'AddItem',
+            component: AddItem
+        })
     }
 
     _onItemPress(){

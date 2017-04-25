@@ -13,14 +13,14 @@ export default class TitleBar extends React.Component{
     constructor(props) {
         super(props);
     }
-    onBack() {
-        this.props.navigator.pop();
-    }
 
     render() {
         return (
             <View style={styles.container}>
-                <Button text={"返回"} style={styles.button} onPress={this.props.backAction}/>
+                {this.props.isMain?
+                    <Button text={"添加URL"} style={styles.button} onPress={this.props.addItemAction}/>:
+                    <Button text={"返回"} style={styles.button} onPress={this.props.backAction}/>
+                }
             </View>
         );
     }
