@@ -35,10 +35,10 @@ export  default  class App extends  React.Component{
 
     componentDidMount(){
        // this._getCacheData();
-        /*InteractionManager.runAfterInteractions(() => {
+        InteractionManager.runAfterInteractions(() => {
             let dataJson =  PriceStore.getAllkey();
             let dataArray = [];
-            if(dataJson){
+            if(dataJson !== undefined ){
                 dataJson.forEach((itemId)=>{
                     let value = PriceStore.cachedObject(itemId);
                     if(value && value.length > 0){
@@ -51,7 +51,7 @@ export  default  class App extends  React.Component{
                     data:dataArray
                 })
             }
-        });*/
+        });
     }
 
     render(){
