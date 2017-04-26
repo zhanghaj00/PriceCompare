@@ -4,10 +4,10 @@
 
 import PriceStore from './PriceStore'
 
-import BackgroundJob from "react-native-background-job";
+//import BackgroundJob from "react-native-background-job";
 import {fetchPrice} from './PriceAction';
 
-export let  task = () => {
+/*export let  task = () => {
     // 要做的事情
     var backgroundSchedule = {
         jobKey: "myJob",
@@ -16,9 +16,9 @@ export let  task = () => {
     }
 
     BackgroundJob.schedule(backgroundSchedule);
-}
+}*/
 
-let job = ()=>{
+export let job = ()=>{
     PriceStore.getAllkey().then(function(dataJson){
         if(dataJson !== undefined ){
             dataJson.forEach((itemId)=>{

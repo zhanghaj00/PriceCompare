@@ -13,8 +13,7 @@
 		"cheerio":"",
 		"events":"",
 		"stream":"",
-		"buffer":"",
-		"react-native-background-job":""
+		"buffer":""
 	},
 	"devDependencies": {
 		"babel-jest": "19.0.0",

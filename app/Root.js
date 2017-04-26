@@ -9,12 +9,12 @@ import {Navigator,View}  from 'react-native'
 
 import App from './App';
 
-import {task} from 'QueryPriceTask';
+import {job} from './QueryPriceTask';
 
 export default  class Root extends React.Component{
 
     componentDidMount() {
-        task();
+        job();
     }
     render(){
         return(
