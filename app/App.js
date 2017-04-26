@@ -35,22 +35,30 @@ export  default  class App extends  React.Component{
 
     componentDidMount(){
        // this._getCacheData();
+        var thiz = this;
         InteractionManager.runAfterInteractions(() => {
-            let dataJson =  PriceStore.getAllkey();
-            let dataArray = [];
-            if(dataJson !== undefined ){
-                dataJson.forEach((itemId)=>{
-                    let value = PriceStore.cachedObject(itemId);
-                    if(value && value.length > 0){
-                        dataArray.push(value[0])
-                    }
-                })
-            }
-            if(dataArray.length > 0){
-                this.setState({
-                    data:dataArray
-                })
-            }
+            PriceStore.getAllkey().then(function(dataJson){
+
+                if(dataJson !== undefined ){
+                    dataJson.forEach((itemId)=>{
+                        PriceStore.cachedObject(itemId).then(function(value){
+                            let valueJson = JSON.parse(value);
+                            let dataArray = thiz.state.data;
+                            if(valueJson && valueJson.length > 0){
+                                dataArray.push(valueJson[0]);
+                                if(dataArray.length > 0){
+                                    thiz.setState({
+                                        data:dataArray
+                                    })
+                                }
+                            }
+                        }).done();
+
+                    })
+                }
+
+            });
+
         });
     }
 
@@ -94,20 +102,23 @@ export  default  class App extends  React.Component{
         })
     }
 
-    _onItemPress(){
+    _onItemPress(data){
         console.log("press");
         this.props.navigator.push({
             name: 'ItemChart',
-            component: ItemChart
+            component: ItemChart,
+            params:{
+                data:data
+            }
         })
     }
 
     _renderItem(newsData){
         return(
-            <TouchableNativeFeedback onPress={this._onItemPress.bind(this)}>
+            <TouchableNativeFeedback onPress={this._onItemPress.bind(this,newsData)}>
                 <View style={{flexDirection:'row'}}>
                     <View style={styles.itemViewContainer}>
-                        <Text style={styles.title} numberOfLines={2}>{newsData.title}   当前价格： {newsData.price}</Text>
+                        <Text style={styles.title} numberOfLines={2}>{newsData.shortTitle}   当前价格： {newsData.price}</Text>
                     </View>
                 </View>
             </TouchableNativeFeedback>

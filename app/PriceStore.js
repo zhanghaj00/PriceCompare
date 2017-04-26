@@ -4,33 +4,32 @@
 import { AsyncStorage } from 'react-native';
 
 let PriceStore = {
-    async setObject(key, value){
+     setObject(key, value){
         const jsonValue = JSON.stringify(value);
-        return  await AsyncStorage.setItem(key, jsonValue, (error) => {
+        return   AsyncStorage.setItem(key, jsonValue, (error) => {
             // console.log(key + ' setOrRemoveObject error: ' + error);
         });
     },
 
      cachedObject(key){
-        AsyncStorage.getItem(key)
+       return  AsyncStorage.getItem(key)
             .then((data, error) => {
-                if (data && data.length > 0) return JSON.parse(data);
-
+                if (data && data.length > 0) return data;
                 // console.log(key + ' cachedObject error: ' + error);
-                return null;
             })
     },
 
     getAllkey(){
-        AsyncStorage.getAllKeys()
+          return AsyncStorage.getAllKeys()
             .then((data,error)=>{
-                if(data && data.length > 0 ) return JSON.parse(data);
-            })
+                if(data && data.length > 0 )  return  data;
+            });
+       /* return await AsyncStorage.getAllKeys();*/
         /*var value = await AsyncStorage.getAllKeys();
         return value;*/
     },
-    async clearCachedObject(key){
-        return await AsyncStorage.removeItem(key);
+    clearCachedObject(key){
+        return  AsyncStorage.removeItem(key);
     },
 }
 

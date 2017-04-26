@@ -9,11 +9,13 @@ import {Navigator,View}  from 'react-native'
 
 import App from './App';
 
+import {task} from 'QueryPriceTask';
+
 export default  class Root extends React.Component{
 
-
-
-
+    componentDidMount() {
+        task();
+    }
     render(){
         return(
             <View style={{flex: 1}}>

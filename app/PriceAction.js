@@ -13,7 +13,7 @@ export let fetchPrice =  (itemId,successCallback,failCallback) =>{
         .then((response) => response.text())
         .then((responseText) => {
             let result = JSON.parse(responseText);
-            successCallback(result.p);
+            successCallback(result[0].p);
         })
         .catch((err) => {
             failCallback(err);
@@ -24,21 +24,38 @@ export let getJdGoodsInfo = (jdUrl) =>{
     //https://item.m.jd.com/product/717252.html?
     // resourceType=jdapp_share&resourceValue=CopyURL&utm_source=
     // androidapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=CopyURL
+    fetch(jdUrl)
+        .then((response) => response.text())
+        .then((responseText) => {
+            var $ = Cheerio.load(responseText);
+            let title = $('.title-text').text();
+            let titleShort = title.replace(/(^\s*)|(\s*$)/g, "").substring(0,6);
+            let itemId = $('#pingjia').attr('report-pageparam');
+            if(itemId){
+                fetchPrice(itemId,(price)=>{
 
-    var $ = Cheerio.load(jdUrl);
-    let title = $('body');
-    let itemId = $('#pingjia').attr('report-pageparam');
-    //let itemId = jdUrl.substring(29,jdUrl.index(".html"));
-    if(itemId){
-        fetchPrice(itemId,(price)=>{
-            let value = PriceStore.cachedObject(itemId);
-            let newPrice = {itemId:itemId,price:price,time:new Date()};
-            if(value){
-                value.push(newPrice);
-            }else{
-                PriceStore.setObject(itemId,[newPrice]);
+                    PriceStore.cachedObject(itemId).then(function(value){
+                        let dateTime = new Date();
+                        let timeStr = dateTime.getFullYear()+""+(dateTime.getMonth()+1)<10?("0"+(dateTime.getMonth()+1)):(dateTime.getMonth()+1) +"" +dateTime.getDate();
+
+                        let newPrice = {itemId:itemId,price:price,title:title,time:timeStr,shortTitle:titleShort};
+                        if(value){
+                            let jsonValue = JSON.parse(value);
+                            if(jsonValue[0].time == timeStr){return;}
+                            PriceStore.clearCachedObject(itemId).then(function(){
+                                jsonValue.push(newPrice);
+                                PriceStore.setObject(itemId,jsonValue);
+                            })
+
+                        }else{
+                            PriceStore.setObject(itemId,[newPrice]);
+                        }
+                    });
+
+                })
             }
         })
-    }
-    //放入内存中
+        .catch((err) => {
+            console.log(err);
+        });
 }
