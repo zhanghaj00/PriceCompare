@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import {View, StyleSheet,Text,TouchableNativeFeedback,Alert,TextInput,Button} from 'react-native';
+import {View, StyleSheet,Text,TouchableNativeFeedback,Alert,TextInput,Button,DeviceEventEmitter} from 'react-native';
 
 import {getJdGoodsInfo} from './PriceAction';
 
@@ -31,13 +31,13 @@ export  default  class AddItem extends React.Component{
                         onChangeText={(text) => this.setState({text})}
                         value={this.state.text}
                     />
+                    <Button
+                        onPress={this._addItem.bind(this)}
+                        title="确认"
+                        color="#841584"
+                        accessibilityLabel="Learn more about this purple button"
+                    />
                 </View>
-                <Button
-                    onPress={this._addItem.bind(this)}
-                    title="确认"
-                    color="#841584"
-                    accessibilityLabel="Learn more about this purple button"
-                />
             </View>
         )
     }
@@ -52,6 +52,7 @@ export  default  class AddItem extends React.Component{
         }
         getJdGoodsInfo(url);
         Alert.alert("成功");
+        DeviceEventEmitter.emit('finishAdd',url);
         this.props.navigator.pop();
     }
     _backAction(){

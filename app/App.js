@@ -10,7 +10,8 @@ import {
     ListView,
     RefreshControl,
     TouchableNativeFeedback,
-    InteractionManager
+    InteractionManager,
+    DeviceEventEmitter
 } from 'react-native'
 
 import ItemChart from './ItemChart';
@@ -28,17 +29,23 @@ export  default  class App extends  React.Component{
             dataSource: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
             }),
-            data:[{id:1,title:'单车2',price:'21.5'},{id:2,title:'单车1',price:'21.5'}],
+            data:[],
             isMain :true
         }
     }
 
     componentDidMount(){
        // this._getCacheData();
+        DeviceEventEmitter.addListener('finishAdd',this._reload.bind(this));
+
+        this._reload();
+
+    }
+
+    _reload(){
         var thiz = this;
         InteractionManager.runAfterInteractions(() => {
             PriceStore.getAllkey().then(function(dataJson){
-
                 if(dataJson !== undefined ){
                     dataJson.forEach((itemId)=>{
                         PriceStore.cachedObject(itemId).then(function(value){
@@ -62,12 +69,15 @@ export  default  class App extends  React.Component{
         });
     }
 
+    componentWillUnmount() {
+        this.subscription.remove();
+    }
+
     render(){
         return(
             <View style={styles.container}>
                 <TitleBar  {...this.state}  addItemAction={this._addItemAction.bind(this)}/>
                 <Text style={styles.text}>收藏的商品</Text>
-                <TitleBar  addItemAction={this._addItemAction.bind(this)}/>
                 <View style={styles.list}>
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(this.state.data)}

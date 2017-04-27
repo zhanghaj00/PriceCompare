@@ -33,11 +33,9 @@ export let getJdGoodsInfo = (jdUrl) =>{
             let itemId = $('#pingjia').attr('report-pageparam');
             if(itemId){
                 fetchPrice(itemId,(price)=>{
-
                     PriceStore.cachedObject(itemId).then(function(value){
                         let dateTime = new Date();
                         let timeStr = dateTime.getFullYear()+""+(dateTime.getMonth()+1)<10?("0"+(dateTime.getMonth()+1)):(dateTime.getMonth()+1) +"" +dateTime.getDate();
-
                         let newPrice = {itemId:itemId,price:price,title:title,time:timeStr,shortTitle:titleShort};
                         if(value){
                             let jsonValue = JSON.parse(value);
