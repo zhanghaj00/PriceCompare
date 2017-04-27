@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     container:{
         flexDirection:'column',
         position:'absolute',
-        top:60,
+        top:20,
         left:0,
         right:0,
         bottom:0

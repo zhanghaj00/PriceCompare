@@ -57,3 +57,59 @@ export let getJdGoodsInfo = (jdUrl) =>{
             console.log(err);
         });
 }
+
+export let getTBGoodsInfo = (tbUrl) =>{
+    //http://zmnxbc.com/s/ceHwj?tm=aa3104
+    fetch(tbUrl)
+        .then((response) => response.text())
+        .then((responseText) => {
+            var $ = Cheerio.load(responseText);
+            let scriptArray = $('script').toArray();
+
+            if (scriptArray && scriptArray.length > 2) {
+                var scriptStr = scriptArray[2].children[0].data;
+
+                var jsonStr = scriptStr.split("=")[1].split(";")[0]
+
+                var json = JSON.parse(jsonStr);
+
+                if (json && json.itemPrice) {
+                    let titleShort = json.title;
+                    let title = json.content;
+                    let url = tbUrl;
+                    let price = json.itemPrice;
+
+                    if (url) {
+                        PriceStore.cachedObject(url).then(function (value) {
+                            let dateTime = new Date();
+                            let timeStr = dateTime.getFullYear() + "" + (dateTime.getMonth() + 1) < 10 ? ("0" + (dateTime.getMonth() + 1)) : (dateTime.getMonth() + 1) + "" + dateTime.getDate();
+                            let newPrice = {
+                                url: url,
+                                price: price,
+                                title: title,
+                                time: timeStr,
+                                shortTitle: titleShort
+                            };
+                            if (value) {
+                                let jsonValue = JSON.parse(value);
+                                if (jsonValue[0].time == timeStr) {
+                                    return;
+                                }
+                                PriceStore.clearCachedObject(itemId).then(function () {
+                                    jsonValue.push(newPrice);
+                                    PriceStore.setObject(url, jsonValue);
+                                })
+
+                            } else {
+                                PriceStore.setObject(url, [newPrice]);
+                            }
+                        });
+                    }
+                }
+            }
+
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
