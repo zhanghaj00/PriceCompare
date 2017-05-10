@@ -78,6 +78,7 @@ export let getTBGoodsInfo = (tbUrl) =>{
                     let title = json.content;
                     let url = tbUrl;
                     let price = json.itemPrice;
+                    let itemId = tbUrl;
 
                     if (url) {
                         PriceStore.cachedObject(url).then(function (value) {
@@ -88,7 +89,8 @@ export let getTBGoodsInfo = (tbUrl) =>{
                                 price: price,
                                 title: title,
                                 time: timeStr,
-                                shortTitle: titleShort
+                                shortTitle: titleShort,
+                                itemId:itemId
                             };
                             if (value) {
                                 let jsonValue = JSON.parse(value);

@@ -47,7 +47,7 @@ export  default  class AddItem extends React.Component{
                         value={this.state.tbtext}
                     />
                     <Button
-                        onPress={this._addItem.bind(this)}
+                        onPress={this._addTBItem.bind(this)}
                         title="确认"
                         color="#841584"
                         accessibilityLabel="Learn more about this purple button"
@@ -71,7 +71,7 @@ export  default  class AddItem extends React.Component{
         this.props.navigator.pop();
     }
 
-    _addItem(){
+    _addTBItem(){
         let url = this.state.tbtext;
         if(!url){
             Alert.alert("请输入tb rul");

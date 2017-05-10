@@ -47,6 +47,9 @@ export  default  class App extends  React.Component{
         InteractionManager.runAfterInteractions(() => {
             PriceStore.getAllkey().then(function(dataJson){
                 if(dataJson !== undefined ){
+                    thiz.setState({
+                        data:[]
+                    })
                     dataJson.forEach((itemId)=>{
                         PriceStore.cachedObject(itemId).then(function(value){
                             let valueJson = JSON.parse(value);
@@ -82,6 +85,7 @@ export  default  class App extends  React.Component{
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(this.state.data)}
                         renderRow={this._renderItem.bind(this)}
+                        enableEmptySections = {true}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}

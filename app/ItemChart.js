@@ -62,14 +62,15 @@ export  default  class ItemChart extends React.Component{
             <View style={itemStyles.container}>
                 <TitleBar backAction={this._backAction.bind(this)}/>
                 <Text style={itemStyles.text}>{title}</Text>
-                <View style={{flex:1,paddingTop:30,height:330,paddingRight:40,paddingLeft:40}}>
-                    <LineChart style={{height:300}} data={this._getLineData()}
+                <View style={{flex:1,paddingTop:30,height:230,paddingRight:40,paddingLeft:40}}>
+                    <LineChart style={{height:200}} data={this._getLineData()}
                                xAxis={{drawGridLines:false,gridLineWidth:1,position:"BOTTOM"}}/>
                 </View>
                 <View style={{flex:1,paddingTop:0}}>
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(this.state.listData)}
                         renderRow={this._renderItem.bind(this)}
+                        enableEmptySections = {true}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -92,7 +93,7 @@ export  default  class ItemChart extends React.Component{
             <TouchableNativeFeedback onPress={this._onItemPress.bind(this,newsData)}>
                 <View style={{flexDirection:'row'}}>
                     <View style={{flex:1}}>
-                        <Text style={itemStyles.title} numberOfLines={2}>{newsData.shortTitle}   价格： {newsData.price} 时间： {newsData.time}</Text>
+                        <Text style={itemStyles.title} numberOfLines={2}>价格： {newsData.price} 时间： {newsData.time}</Text>
                     </View>
                 </View>
             </TouchableNativeFeedback>

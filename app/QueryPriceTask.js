@@ -22,7 +22,7 @@ export let job = ()=>{
     PriceStore.getAllkey().then(function(dataJson){
         if(dataJson !== undefined ){
             dataJson.forEach((itemId)=> {
-                if (itemId && itemId.length > 10) {
+                if (itemId && itemId.length > 15) {
                     getTBGoodsInfo(itemId);
                 } else {
                     fetchPrice(itemId, (price)=> {
@@ -32,7 +32,7 @@ export let job = ()=>{
 
                             if (value) {
                                 let jsonValue = JSON.parse(value);
-                                if (jsonValue[0].time == timeStr) {
+                                if (jsonValue[jsonValue.length-1].time == timeStr) {
                                     return;
                                 }
                                 PriceStore.clearCachedObject(itemId).then(function () {
