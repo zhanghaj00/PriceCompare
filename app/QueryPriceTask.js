@@ -17,7 +17,9 @@ import {fetchPrice,getTBGoodsInfo} from './PriceAction';
 
     BackgroundJob.schedule(backgroundSchedule);
 }*/
-
+export let byTime = (x,y)=>{
+    return (x.time < y.time) ? -1 : 1
+}
 export let job = ()=>{
     PriceStore.getAllkey().then(function(dataJson){
         if(dataJson !== undefined ){
@@ -29,9 +31,10 @@ export let job = ()=>{
                         PriceStore.cachedObject(itemId).then(function (value) {
                             let dateTime = new Date();
                             let timeStr = dateTime.getFullYear() + "" + (dateTime.getMonth() + 1) < 10 ? ("0" + (dateTime.getMonth() + 1)) : (dateTime.getMonth() + 1) + "" + dateTime.getDate();
-
+                            console.log(timeStr);
                             if (value) {
                                 let jsonValue = JSON.parse(value);
+                               // console.log(jsonValue.sort(byTime));
                                 if (jsonValue[jsonValue.length-1].time == timeStr) {
                                     return;
                                 }

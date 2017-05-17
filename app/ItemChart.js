@@ -3,13 +3,14 @@
  */
 
 import React from 'react';
-import {View, StyleSheet,Text,ListView,RefreshControl,TouchableNativeFeedback} from 'react-native';
+import {View, StyleSheet,Text,ListView,RefreshControl,TouchableNativeFeedback,Button} from 'react-native';
 
 import {LineChart} from 'react-native-chart-android'
 
 
 import TitleBar from './TitleBar'
 import PriceStore from './PriceStore';
+import {byTime} from './QueryPriceTask';
 
 export  default  class ItemChart extends React.Component{
 
@@ -29,6 +30,10 @@ export  default  class ItemChart extends React.Component{
     }
 
     componentDidMount() {
+        this._getItemdata();
+    }
+
+    _getItemdata(){
         let itemId = this.props.data.itemId;
         let thiz = this;
         if(itemId){
@@ -38,6 +43,7 @@ export  default  class ItemChart extends React.Component{
                     let xValues = new Array();
                     let data = new Array();
                     let listData = new Array();
+                    valueJson.sort(byTime)
                     valueJson.forEach((items)=>{
                         listData.push(items);
                         if(xValues && data){
@@ -55,9 +61,9 @@ export  default  class ItemChart extends React.Component{
             }).done();
         }
     }
-
     render(){
         let title = this.props.data.title ;
+        let itemId = this.props.data.itemId;
         return(
             <View style={itemStyles.container}>
                 <TitleBar backAction={this._backAction.bind(this)}/>
@@ -66,6 +72,15 @@ export  default  class ItemChart extends React.Component{
                     <LineChart style={{height:200}} data={this._getLineData()}
                                xAxis={{drawGridLines:false,gridLineWidth:1,position:"BOTTOM"}}/>
                 </View>
+                <Button
+                    onPress={this._onItemPressClear.bind(this,itemId)}
+                    title="保留最后一次数据"
+                    color="#841584"
+                    accessibilityLabel="Learn more about this purple button"
+                />
+               {/* <TouchableNativeFeedback onPress={this._onItemPressClear.bind(this,itemId)}>
+                    <Text style={itemStyles.textClear}>保留最后一次数据</Text>
+                </TouchableNativeFeedback>*/}
                 <View style={{flex:1,paddingTop:0}}>
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(this.state.listData)}
@@ -87,7 +102,20 @@ export  default  class ItemChart extends React.Component{
             </View>
         )
     }
-
+    _onItemPressClear(itemId){
+        let thiz = this;
+        PriceStore.cachedObject(itemId).then(function (value) {
+            if (value) {
+                let jsonValue = JSON.parse(value);
+                console.log(jsonValue.sort(byTime));
+                if(jsonValue && jsonValue.length > 0){
+                    let value = jsonValue[jsonValue.length-1]
+                    PriceStore.setObject(itemId, [value]);
+                }
+                thiz._getItemdata();
+            }
+        });
+    }
     _renderItem(newsData){
         return(
             <TouchableNativeFeedback onPress={this._onItemPress.bind(this,newsData)}>
@@ -147,6 +175,12 @@ const itemStyles = StyleSheet.create({
         alignItems:'center',
         textAlign:'center',
         fontSize:18,
+        color: '#000001'
+    },
+    textClear:{
+        alignItems:'center',
+        textAlign:'center',
+        fontSize:10,
         color: '#000001'
     },
 })

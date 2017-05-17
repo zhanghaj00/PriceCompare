@@ -19,6 +19,7 @@ import TitleBar from './TitleBar';
 import AddItem from './AddItem';
 import PriceStore from './PriceStore';
 
+
 export  default  class App extends  React.Component{
 
 
@@ -46,10 +47,10 @@ export  default  class App extends  React.Component{
         var thiz = this;
         InteractionManager.runAfterInteractions(() => {
             PriceStore.getAllkey().then(function(dataJson){
+                thiz.setState({
+                    data:[]
+                })
                 if(dataJson !== undefined ){
-                    thiz.setState({
-                        data:[]
-                    })
                     dataJson.forEach((itemId)=>{
                         PriceStore.cachedObject(itemId).then(function(value){
                             let valueJson = JSON.parse(value);
@@ -127,15 +128,26 @@ export  default  class App extends  React.Component{
         })
     }
 
+    _onItemDeletePress(data){
+        let thiz = this;
+        PriceStore.clearCachedObject(data.itemId).then(function(){
+            thiz._reload()
+        });
+    }
     _renderItem(newsData){
         return(
+            <View style={{flexDirection:'row'}}>
+            <TouchableNativeFeedback onPress={this._onItemDeletePress.bind(this,newsData)}>
+                <View><Text>删除</Text></View>
+            </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={this._onItemPress.bind(this,newsData)}>
-                <View style={{flexDirection:'row'}}>
+                <View >
                     <View style={styles.itemViewContainer}>
                         <Text style={styles.title} numberOfLines={2}>{newsData.shortTitle}   当前价格： {newsData.price}</Text>
                     </View>
                 </View>
             </TouchableNativeFeedback>
+            </View>
         )
     }
 
