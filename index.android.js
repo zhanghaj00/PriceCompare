@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import Root from './app/Root';
-
-
+import BackGroundTask from './app/BackGroundTask'
+AppRegistry.registerHeadlessTask('BackGroundTask', () => BackGroundTask);
 AppRegistry.registerComponent('PriceCompare', () => Root);
+
+
