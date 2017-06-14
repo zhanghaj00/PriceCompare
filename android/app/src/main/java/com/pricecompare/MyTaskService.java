@@ -17,7 +17,7 @@ public class MyTaskService extends HeadlessJsTaskService {
       return new HeadlessJsTaskConfig(
           "BackGroundTask",
           Arguments.fromBundle(extras),
-          5000);
+          10);
     }
     return null;
   }

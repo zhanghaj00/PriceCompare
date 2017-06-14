@@ -3,17 +3,20 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
+		"configureJPush": "node node_modules/jpush-react-native/JPushConfiguration.js",
 		"start": "node node_modules/react-native/local-cli/cli.js start",
 		"test": "jest"
 	},
 	"dependencies": {
+		"buffer": "",
+		"cheerio": "^0.22.0",
+		"events": "",
+		"parse5": "^3.0.2",
 		"react": "16.0.0-alpha.6",
 		"react-native": "^0.43.0",
-		"react-native-chart-android":"2.0.0",
-		"cheerio":"",
-		"events":"",
-		"stream":"",
-		"buffer":""
+		"react-native-chart-android": "2.0.0",
+		"stream": "",
+		"util": "^0.10.3"
 	},
 	"devDependencies": {
 		"babel-jest": "19.0.0",

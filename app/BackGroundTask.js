@@ -5,6 +5,12 @@ import PriceStore from './PriceStore'
 import {fetchPrice,getTBGoodsInfo} from './PriceAction';
 
 export default BackGroundTask = async  (taskData)=>{
+
+    this.timer = setTimeout(
+        () => { console.log('把一个定时器的引用挂在this上::::'); console.log(taskData);},
+        2000
+    );
+
     console.log("in task........")
     PriceStore.getAllkey().then(function(dataJson){
         if(dataJson !== undefined ){
